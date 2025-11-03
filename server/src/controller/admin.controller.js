@@ -62,3 +62,13 @@ export const terminateUser=async(req,res)=>{
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
+export const getAllStaff=async(req,res)=>{
+  try{
+    const staff=await User.find({role:"staff"}).select("-password");
+    res.status(200).json({staff});
+  }catch(err){
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}

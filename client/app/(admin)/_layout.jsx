@@ -5,8 +5,8 @@ export default function AdminLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: '#d97706',
-        headerShown: true,
+        tabBarActiveTintColor: '#e17055',
+        headerShown: false,
       }}>
       <Tabs.Screen
         name="home"

@@ -24,11 +24,19 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      const userData = await AsyncStorage.getItem('user');
+      const [userData, tokenData] = await Promise.all([
+        AsyncStorage.getItem('user'),
+        AsyncStorage.getItem('token')
+      ]);
+      
       if (userData) {
         const parsedUser = JSON.parse(userData);
         setUser(parsedUser);
         setIsAuthenticated(true);
+      }
+      
+      if (tokenData) {
+        settoken(tokenData);
       }
     } catch (error) {
       console.error('Error loading user:', error);
@@ -48,10 +56,21 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const setTokenAndPersist = async (tokenValue) => {
+    try {
+      await AsyncStorage.setItem('token', tokenValue);
+      settoken(tokenValue);
+    } catch (error) {
+      console.error('Error saving token:', error);
+      throw error;
+    }
+  };
+
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem('user');
+      await AsyncStorage.multiRemove(['user', 'token']);
       setUser(null);
+      settoken(null);
       setIsAuthenticated(false);
     } catch (error) {
       console.error('Error logging out:', error);
@@ -70,7 +89,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     isAdmin,
     token,
-    settoken
+    settoken: setTokenAndPersist
   };
 
 

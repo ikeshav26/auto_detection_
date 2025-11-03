@@ -1,6 +1,7 @@
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, RefreshControl, Alert } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, RefreshControl, Alert, ActivityIndicator } from 'react-native';
 import { useState, useEffect } from 'react';
 import { API_URI } from '../../constants/config';
+import { AppTheme } from '../../constants/theme';
 
 export default function NotificationsScreen() {
   const [notifications, setNotifications] = useState([]);
@@ -103,16 +104,26 @@ export default function NotificationsScreen() {
       </View>
 
       {loading ? (
-        <Text style={styles.placeholder}>Loading notifications...</Text>
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={AppTheme.colors.primary} />
+          <Text style={styles.loadingText}>Loading notifications...</Text>
+        </View>
       ) : notifications.length === 0 ? (
-        <Text style={styles.placeholder}>No notifications yet</Text>
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyIcon}>📭</Text>
+          <Text style={styles.placeholder}>No notifications yet</Text>
+        </View>
       ) : (
         <FlatList
           data={notifications}
           renderItem={renderNotification}
           keyExtractor={(item) => item._id}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl 
+              refreshing={refreshing} 
+              onRefresh={onRefresh}
+              tintColor={AppTheme.colors.primary}
+            />
           }
           contentContainerStyle={styles.listContainer}
         />
@@ -124,43 +135,44 @@ export default function NotificationsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: AppTheme.colors.background,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
+    backgroundColor: AppTheme.colors.backgroundLight,
+    borderBottomWidth: 2,
+    borderBottomColor: AppTheme.colors.border,
   },
   title: {
     fontSize: 28,
-    fontWeight: 'bold',
+    fontWeight: AppTheme.fontWeight.bold,
+    color: AppTheme.colors.primary,
   },
   markAllButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: AppTheme.colors.secondary,
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 6,
+    borderRadius: AppTheme.borderRadius.sm,
   },
   markAllText: {
-    color: '#fff',
+    color: AppTheme.colors.textWhite,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: AppTheme.fontWeight.bold,
   },
   listContainer: {
     padding: 16,
   },
   notificationCard: {
-    backgroundColor: '#fff',
-    borderRadius: 12,
+    backgroundColor: AppTheme.colors.backgroundCard,
+    borderRadius: AppTheme.borderRadius.lg,
     padding: 16,
     marginBottom: 12,
-    borderWidth: 1,
-    borderColor: '#e0e0e0',
-    shadowColor: '#000',
+    borderWidth: 2,
+    borderColor: AppTheme.colors.border,
+    shadowColor: AppTheme.colors.shadow,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -168,7 +180,7 @@ const styles = StyleSheet.create({
   },
   unreadCard: {
     borderLeftWidth: 4,
-    borderLeftColor: '#FF3B30',
+    borderLeftColor: AppTheme.colors.primary,
   },
   notificationHeader: {
     flexDirection: 'row',
@@ -182,23 +194,23 @@ const styles = StyleSheet.create({
   },
   typeText: {
     fontSize: 12,
-    fontWeight: '700',
-    color: '#FF3B30',
+    fontWeight: AppTheme.fontWeight.bold,
+    color: AppTheme.colors.primary,
     marginRight: 8,
   },
   unreadDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#FF3B30',
+    backgroundColor: AppTheme.colors.primary,
   },
   timeText: {
     fontSize: 12,
-    color: '#666',
+    color: AppTheme.colors.textSecondary,
   },
   messageText: {
     fontSize: 16,
-    color: '#333',
+    color: AppTheme.colors.textPrimary,
     marginBottom: 12,
     lineHeight: 22,
   },
@@ -209,19 +221,38 @@ const styles = StyleSheet.create({
   },
   statText: {
     fontSize: 14,
-    color: '#666',
+    color: AppTheme.colors.textSecondary,
   },
   snapshot: {
     width: '100%',
     height: 200,
-    borderRadius: 8,
+    borderRadius: AppTheme.borderRadius.md,
     marginBottom: 12,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: AppTheme.colors.textSecondary,
+    fontWeight: AppTheme.fontWeight.medium,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyIcon: {
+    fontSize: 64,
+    marginBottom: 16,
   },
   placeholder: {
     fontSize: 16,
-    color: '#999',
+    color: AppTheme.colors.textLight,
     textAlign: 'center',
-    marginTop: 50,
   },
 });
 
