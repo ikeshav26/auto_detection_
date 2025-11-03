@@ -4,6 +4,7 @@ import { connectDB } from './src/config/Db.js'
 import cookieParser from 'cookie-parser'
 import userRoutes from './src/routes/user.routes.js'
 import adminRoutes from './src/routes/admin.routes.js'
+import notificationRoutes from './src/routes/notification.routes.js'
 import cors from 'cors'
 
 
@@ -12,9 +13,8 @@ dotenv.config()
 
 const app=express()
 
-// More permissive CORS for development
 app.use(cors({
-  origin: true, // Allow all origins in development
+  origin: true, 
   credentials: true,
 }))
 
@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 })
 app.use('/api/user',userRoutes)
 app.use('/api/admin',adminRoutes)
+app.use('/api/notifications',notificationRoutes)
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`)

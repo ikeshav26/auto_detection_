@@ -14,7 +14,7 @@ export default function SignupScreen() {
   const [isLoading, setIsLoading] = useState(false);
   
   const router = useRouter();
-  const { login } = useAuth();
+  const { login ,settoken} = useAuth();
 
   const handleSignup = async() => {
     if (!username || !email || !password || !passKey) {
@@ -34,7 +34,7 @@ export default function SignupScreen() {
       const res = await axios.post(`${API_URI}/user/signup`, formData, {
         headers: {
           'Content-Type': 'application/json',
-        }
+        },withCredentials:true
       });
       
       console.log('Signup successful:', res.data);
@@ -42,6 +42,7 @@ export default function SignupScreen() {
       // Save user data and navigate
       if (res.data.user) {
         await login(res.data.user);
+        await settoken(res.data.token);
         Alert.alert('Success', 'Account created successfully!');
         
         // Navigate based on role

@@ -11,7 +11,7 @@ export default function LoginScreen() {
   const [isLoading, setIsLoading] = useState(false);
   
   const router = useRouter();
-  const { login } = useAuth();
+  const { login ,settoken} = useAuth();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -29,7 +29,7 @@ export default function LoginScreen() {
       const res = await axios.post(`${API_URI}/user/login`, formData, {
         headers: {
           'Content-Type': 'application/json',
-        }
+        },withCredentials:true
       });
       
       console.log('Login successful:', res.data);
@@ -37,6 +37,7 @@ export default function LoginScreen() {
       // Save user data and navigate
       if (res.data.user) {
         await login(res.data.user);
+        await settoken(res.data.token);
         Alert.alert('Success', 'Logged in successfully!');
         
         // Navigate based on role

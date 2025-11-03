@@ -15,8 +15,9 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, settoken] = useState(null)
 
-  // Load user data from AsyncStorage on app start
+  
   useEffect(() => {
     loadUser();
   }, []);
@@ -68,7 +69,10 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     isAdmin,
+    token,
+    settoken
   };
+
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
