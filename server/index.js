@@ -30,6 +30,6 @@ app.use('/api/user',userRoutes)
 app.use('/api/admin',adminRoutes)
 app.use('/api/notifications',notificationRoutes)
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`)
-})
+app.listen(process.env.PORT, "0.0.0.0", () => {
+  console.log(`Server is running on http://10.53.2.26:${process.env.PORT}`);
+});
